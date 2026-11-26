@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente Grip Video • Tracción Digital</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#080d1a',
+                            card: '#0f172a',
+                            cardBorder: '#1e293b',
+                            blue: '#0284c7',
+                            cyan: '#38bdf8',
+                            orange: '#f59e0b',
+                            yellow: '#fbbf24'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glow-cyan {
+            box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.35);
+        }
+        .glow-orange {
+            box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.35);
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Navbar -->
+    <header class="glass-panel sticky top-0 z-50 border-b border-slate-800 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-blue to-brand-cyan p-0.5 flex items-center justify-center glow-cyan">
+                    <img src="/static/grip.png" alt="Grip" class="w-9 h-9 object-contain">
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        Tracción Digital <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20">Video Agent v1.0</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Automatización, Espionaje de Competencia y Creación de Video Vertical (9:16)</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <a href="https://tracciondigital.com.mx" target="_blank" class="text-xs text-slate-400 hover:text-white transition flex items-center gap-1">
+                    🌐 tracciondigital.com.mx
+                </a>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Sistema Local Listo
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+
+        <!-- Columna Izquierda: Generador y Grip (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+
+            <!-- Tarjeta de Grip Hero -->
+            <div class="glass-panel rounded-2xl p-6 relative overflow-hidden border border-brand-cardBorder">
+                <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-brand-cyan/10 rounded-full blur-2xl"></div>
+                <div class="flex items-center space-x-5">
+                    <img src="/static/grip.png" alt="Grip Mascota" class="w-24 h-24 object-contain animate-bounce" style="animation-duration: 3s;">
+                    <div>
+                        <div class="inline-block text-xs font-semibold text-brand-orange uppercase tracking-wider mb-1">Tu Asistente Autónomo</div>
+                        <h2 class="text-lg font-bold text-white">¡Hola, equipo Tracción!</h2>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                            Estoy listo para generar videos de alta retención. Recuerda: <strong>cero mención de costos</strong> y enfoque total en resolver problemas reales.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Generación Rápida -->
+            <div class="glass-panel rounded-2xl p-6 border border-brand-cardBorder">
+                <h3 class="text-base font-bold text-white flex items-center gap-2 mb-4">
+                    ⚡ Generador Rápido de Video
+                </h3>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Turno del Video</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="btn-slot-morning" onclick="setSlot('morning')" class="py-2.5 px-4 rounded-xl border border-brand-orange bg-brand-orange/10 text-brand-orange font-semibold text-sm transition flex items-center justify-center gap-2">
+                                ☀️ Mañana (Conversión)
+                            </button>
+                            <button id="btn-slot-evening" onclick="setSlot('evening')" class="py-2.5 px-4 rounded-xl border border-slate-700 bg-slate-800/50 text-slate-400 font-semibold text-sm hover:border-slate-500 transition flex items-center justify-center gap-2">
+                                🌙 Tarde (Educativo)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Estilo Visual</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="btn-style-grip" onclick="setStyle('Grip')" class="py-2.5 px-4 rounded-xl border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-semibold text-sm transition flex items-center justify-center gap-2">
+                                🤖 Con Grip
+                            </button>
+                            <button id="btn-style-broll" onclick="setStyle('B-Roll Tech')" class="py-2.5 px-4 rounded-xl border border-slate-700 bg-slate-800/50 text-slate-400 font-semibold text-sm hover:border-slate-500 transition flex items-center justify-center gap-2">
+                                💻 B-Roll Tech
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Tema Personalizado (Opcional)</label>
+                        <input type="text" id="custom-topic" placeholder="Ej. ¿Para qué sirve Google Search Console?" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                    </div>
+
+                    <button id="btn-generate" onclick="generateVideo()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-brand-blue to-brand-cyan text-white font-bold text-sm tracking-wide shadow-lg glow-cyan hover:opacity-95 transition flex items-center justify-center gap-2">
+                        <span>🎬 Generar Video Local (1-Clic)</span>
+                    </button>
+                    <div id="gen-status" class="text-xs text-center text-slate-400 hidden"></div>
+                </div>
+            </div>
+
+            <!-- Radar de Competencia & Tendencias -->
+            <div class="glass-panel rounded-2xl p-6 border border-brand-cardBorder">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                        🔥 Fórmulas Virales de la Competencia
+                    </h3>
+                    <span class="text-xs text-brand-orange font-semibold">Top Ranking</span>
+                </div>
+                <div class="space-y-3">
+                    {% for trend in trends %}
+                    <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between text-xs mb-1">
+                            <span class="text-brand-cyan font-semibold">{{ trend.niche }}</span>
+                            <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 font-bold text-[10px]">Score: {{ trend.viral_score }}/100</span>
+                        </div>
+                        <p class="text-xs text-slate-200 font-medium">"{{ trend.viral_hook }}"</p>
+                        <button onclick="useViralHook('{{ trend.viral_hook }}')" class="mt-2 text-[11px] text-brand-cyan hover:underline font-semibold flex items-center gap-1">
+                            👉 Usar este gancho para el siguiente video
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Columna Derecha: Reproductor y Métricas (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Reproductor de Último Video Generado -->
+            <div class="glass-panel rounded-2xl p-6 border border-brand-cardBorder">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            📱 Previsualización en Formato 9:16
+                        </h3>
+                        <p class="text-xs text-slate-400">Listo para TikTok, Instagram Reels y Facebook</p>
+                    </div>
+                    <a id="download-btn" href="/videos/test_video_grip.mp4" download class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                        ⬇️ Descargar MP4
+                    </a>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center gap-6 justify-center">
+                    <!-- Marco del teléfono simulado -->
+                    <div class="w-64 h-[450px] bg-black rounded-3xl p-2 shadow-2xl border-4 border-slate-700 relative overflow-hidden flex items-center justify-center glow-cyan">
+                        <video id="main-player" controls class="w-full h-full object-cover rounded-2xl" src="/videos/test_video_grip.mp4">
+                            Tu navegador no soporta reproducción de video.
+                        </video>
+                    </div>
+
+                    <!-- Datos del Video Actual -->
+                    <div class="flex-1 space-y-3">
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Título / Gancho</span>
+                            <h4 id="video-title" class="text-sm font-bold text-white mt-0.5">¿Para qué sirve Google Search Console?</h4>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Voz Utilizada</span>
+                            <p class="text-xs text-brand-cyan font-medium mt-0.5">es-MX-DaliaNeural (Femenina, Dulce y Clara)</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Destinos Programados</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 font-semibold border border-slate-700">TikTok</span>
+                                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 font-semibold border border-slate-700">Instagram Reels</span>
+                                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 font-semibold border border-slate-700">Facebook</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historial de Videos y Métricas -->
+            <div class="glass-panel rounded-2xl p-6 border border-brand-cardBorder">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            📊 Métricas & Bucle de Aprendizaje
+                        </h3>
+                        <p class="text-xs text-slate-400">El agente aprende qué temas y ganchos retienen más a la audiencia</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="text-[10px] uppercase bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                            <tr>
+                                <th class="py-2.5 px-3">Tema</th>
+                                <th class="py-2.5 px-3">Turno</th>
+                                <th class="py-2.5 px-3">Estilo</th>
+                                <th class="py-2.5 px-3">Retención 3s</th>
+                                <th class="py-2.5 px-3">Score Viral</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metrics-tbody" class="divide-y divide-slate-800">
+                            {% for v in videos %}
+                            <tr class="hover:bg-slate-800/40 transition">
+                                <td class="py-2.5 px-3 font-medium text-white">{{ v.title }}</td>
+                                <td class="py-2.5 px-3">
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] {% if v.slot == 'morning' %}bg-amber-500/10 text-amber-400{% else %}bg-sky-500/10 text-sky-400{% endif %}">
+                                        {{ v.slot }}
+                                    </span>
+                                </td>
+                                <td class="py-2.5 px-3">{{ v.style }}</td>
+                                <td class="py-2.5 px-3 text-emerald-400 font-semibold">{{ v.retention_3s }}%</td>
+                                <td class="py-2.5 px-3 text-brand-orange font-bold">{{ v.performance_score }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="py-6 text-center text-slate-500">
+                                    No hay videos registrados aún. ¡Genera el primero arriba!
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500">
+        Tracción Digital • Todos los derechos reservados. Motor de IA de Video y Métricas Autónomas.
+    </footer>
+
+    <!-- JavaScript Interactivo -->
+    <script>
+        let currentSlot = 'morning';
+        let currentStyle = 'Grip';
+
+        function setSlot(slot) {
+            currentSlot = slot;
+            const morningBtn = document.getElementById('btn-slot-morning');
+            const eveningBtn = document.getElementById('btn-slot-evening');
+            if (slot === 'morning') {
+                morningBtn.className = 'py-2.5 px-4 rounded-xl border border-brand-orange bg-brand-orange/10 text-brand-orange font-semibold text-sm transition flex items-center justify-center gap-2';
+                eveningBtn.className = 'py-2.5 px-4 rounded-xl border border-slate-700 bg-slate-800/50 text-slate-400 font-semibold text-sm hover:border-slate-500 transition flex items-center justify-center gap-2';
+            } else {
+                eveningBtn.className = 'py-2.5 px-4 rounded-xl border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-semibold text-sm transition flex items-center justify-center gap-2';
+                morningBtn.className = 'py-2.5 px-4 rounded-xl border border-slate-700 bg-slate-800/50 text-slate-400 font-semibold text-sm hover:border-slate-500 transition flex items-center justify-center gap-2';
+            }
+        }
+
+        function setStyle(style) {
+            currentStyle = style;
+            const gripBtn = document.getElementById('btn-style-grip');
+            const brollBtn = document.getElementById('btn-style-broll');
+            if (style === 'Grip') {
+                gripBtn.className = 'py-2.5 px-4 rounded-xl border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-semibold text-sm transition flex items-center justify-center gap-2';
+                brollBtn.className = 'py-2.5 px-4 rounded-xl border border-slate-700 bg-slate-800/50 text-slate-400 font-semibold text-sm hover:border-slate-500 transition flex items-center justify-center gap-2';
+            } else {
+                brollBtn.className = 'py-2.5 px-4 rounded-xl border border-brand-orange bg-brand-orange/10 text-brand-orange font-semibold text-sm transition flex items-center justify-center gap-2';
+                gripBtn.className = 'py-2.5 px-4 rounded-xl border border-slate-700 bg-slate-800/50 text-slate-400 font-semibold text-sm hover:border-slate-500 transition flex items-center justify-center gap-2';
+            }
+        }
+
+        function useViralHook(hookText) {
+            document.getElementById('custom-topic').value = hookText;
+            window.scrollTo({ top: 150, behavior: 'smooth' });
+        }
+
+        async function generateVideo() {
+            const btn = document.getElementById('btn-generate');
+            const status = document.getElementById('gen-status');
+            const customTopic = document.getElementById('custom-topic').value;
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin">⏳</span> Generando voz y renderizando con Grip...`;
+            status.classList.remove('hidden');
+            status.innerText = "Sintetizando voz de Dalia y componiendo video 1080x1920...";
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        slot: currentSlot,
+                        style: currentStyle,
+                        topic: customTopic
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    status.innerText = "¡Video renderizado con éxito!";
+                    const player = document.getElementById('main-player');
+                    player.src = data.video_url + '?t=' + new Date().getTime();
+                    player.play();
+                    document.getElementById('video-title').innerText = data.title;
+                    document.getElementById('download-btn').href = data.video_url;
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                } else {
+                    status.innerText = "Error: " + data.error;
+                }
+            } catch (err) {
+                status.innerText = "Error de conexión con el motor local.";
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>🎬 Generar Video Local (1-Clic)</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
