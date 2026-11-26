@@ -2,6 +2,8 @@
 
 Sistema de generación, optimización y publicación automática de video contenido vertical (9:16) para TikTok, Instagram Reels y Facebook.
 
+🌐 **Panel Oficial en Vivo (Cloudflare Tunnel):** [https://agentgrip.tracciondigital.com.mx](https://agentgrip.tracciondigital.com.mx)
+
 ---
 
 ## 🎯 Objetivos y Reglas de Negocio
