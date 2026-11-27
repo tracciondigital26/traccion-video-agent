@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_cors import CORS
 
 from src.script_engine.generator import ScriptEngine
-from src.voice_engine.tts import generate_voiceover, DEFAULT_VOICE
 from src.video_engine.renderer import VideoRenderer
 from src.trend_radar.radar import TrendRadar
 from src.analytics.metrics import MetricsEngine
@@ -14,9 +13,7 @@ CORS(app)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 VIDEOS_DIR = os.path.join(BASE_DIR, "output", "videos")
-AUDIOS_DIR = os.path.join(BASE_DIR, "output", "audios")
 os.makedirs(VIDEOS_DIR, exist_ok=True)
-os.makedirs(AUDIOS_DIR, exist_ok=True)
 
 script_engine = ScriptEngine()
 video_renderer = VideoRenderer()
@@ -33,6 +30,10 @@ def index():
 def serve_video(filename):
     return send_from_directory(VIDEOS_DIR, filename)
 
+@app.route("/download/<path:filename>")
+def download_video(filename):
+    return send_from_directory(VIDEOS_DIR, filename, as_attachment=True)
+
 @app.route("/api/trends", methods=["GET"])
 def get_trends():
     return jsonify(trend_radar.scan_viral_trends())
@@ -45,48 +46,36 @@ def get_metrics():
 def generate_video_api():
     try:
         data = request.json or {}
-        slot = data.get("slot", "morning")
-        style = data.get("style", "Grip")
+        slot = data.get("slot", "evening")
         custom_topic = data.get("topic") or None
 
-        # 1. Generar guión con reglas estrictas (sin costos)
-        script_data = script_engine.generate_script(slot=slot, custom_topic=custom_topic)
+        # 1. Generar historia multiescena completa (5 escenas)
+        story = script_engine.generate_story(slot=slot, custom_topic=custom_topic)
         
         timestamp = int(time.time())
-        audio_filename = f"voice_{slot}_{timestamp}.mp3"
-        audio_path = os.path.join(AUDIOS_DIR, audio_filename)
+        video_filename = f"video_grip_{slot}_{timestamp}.mp4"
         
-        # 2. Sintetizar locución femenina dulce con Edge-TTS
-        generate_voiceover(script_data["full_speech"], audio_path, voice=DEFAULT_VOICE)
+        # 2. Renderizar video multiescena sincronizado con locución
+        video_path = video_renderer.render_full_story_video(story, video_filename)
 
-        # 3. Renderizar Video 1080x1920 con Grip o B-roll
-        video_filename = f"video_{slot}_{timestamp}.mp4"
-        video_path = video_renderer.render_video(
-            audio_path=audio_path,
-            title=script_data["hook"],
-            text=f"{script_data['problem']} {script_data['solution']}",
-            output_filename=video_filename,
-            style=style
-        )
-
-        # 4. Registrar en base de datos de métricas
+        # 3. Registrar en base de datos de métricas
         video_id = metrics_engine.register_video({
-            "title": script_data["topic"],
+            "title": story["topic"],
             "slot": slot,
-            "style": style,
-            "hook": script_data["hook"],
-            "topic": script_data["topic"],
+            "style": "Grip Multiescena",
+            "hook": story["scene1"]["title"],
+            "topic": story["topic"],
             "video_path": video_path,
-            "audio_path": audio_path
+            "audio_path": ""
         })
 
         return jsonify({
             "success": True,
             "video_id": video_id,
-            "title": script_data["topic"],
-            "hook": script_data["hook"],
-            "speech": script_data["full_speech"],
-            "video_url": f"/videos/{video_filename}"
+            "title": story["topic"],
+            "hook": story["scene1"]["title"],
+            "video_url": f"/videos/{video_filename}",
+            "download_url": f"/download/{video_filename}"
         })
 
     except Exception as e:
@@ -95,6 +84,6 @@ def generate_video_api():
 if __name__ == "__main__":
     print("=" * 60)
     print("🚀 Agente Grip Video de Tracción Digital iniciado")
-    print("🌐 Interfaz accesible en: http://localhost:5000 o http://127.0.0.1:5000")
+    print("🌐 Interfaz accesible en: http://localhost:5000")
     print("=" * 60)
     app.run(host="0.0.0.0", port=5000, debug=False)
